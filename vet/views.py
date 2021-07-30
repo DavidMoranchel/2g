@@ -51,33 +51,3 @@ class PetsList(APIView):
         # ]
 
         return Response(data=serializer.data)
-
-
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-# Serializers
-# from .serializers import PetOwnerListSerializer
-
-# serializer_class = PetOwnerListSerializer
-
-# def get(self, request, format=None):
-#     """
-#     Return a list of all pet owners.
-#     """
-#     owners = PetOwner.objects.all()
-#     serializer = self.serializer_class(owners, many=True)
-
-#     return Response(serializer.data)
