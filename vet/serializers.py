@@ -9,6 +9,7 @@ class PetOwnersListSerializer(serializers.Serializer):
 
 
 class PetOwnerSerializer(serializers.Serializer):
+    id = serializers.ReadOnlyField()
     first_name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
     address = serializers.CharField()

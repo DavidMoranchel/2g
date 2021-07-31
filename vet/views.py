@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from django.shortcuts import get_object_or_404
 
 # Serializers
 from .serializers import PetOwnersListSerializer, PetOwnerSerializer, PetsListSerializer
@@ -33,6 +33,17 @@ class PetOwnersListCreate(APIView):
         print(created_instance.__dict__)
 
         return Response({})
+
+
+class PetOwnerDetailAPIView(APIView):
+
+    serializer_class = PetOwnerSerializer
+
+    def get(self, request, pk):
+
+        owner = get_object_or_404(PetOwner, id=pk)
+        serializer = self.serializer_class(owner)
+        return Response(serializer.data)
 
 
 class PetsList(APIView):
