@@ -34,10 +34,9 @@ class PetOwnersListCreateAPIView(APIView):
         serializer = PetOwnerSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         created_instance = serializer.save()
+        serialized_instance = PetOwnerSerializer(created_instance)
 
-        print(created_instance.__dict__)
-
-        return Response({})
+        return Response(serialized_instance.data, status=status.HTTP_201_CREATED)
 
 
 class PetOwnerRetrieveUpdateDestroyAPIView(APIView):
