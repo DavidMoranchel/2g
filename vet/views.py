@@ -5,10 +5,13 @@ from django.shortcuts import get_object_or_404
 
 # Serializers
 from .serializers import (
+    # Pet Owner serializers
     PetOwnerSerializer,
     PetOwnerUpdateSerializer,
     PetOwnersListSerializer,
+    # Pet serializers
     PetsListSerializer,
+    PetSerializer,
 )
 
 # Models
@@ -69,9 +72,9 @@ class PetOwnerRetrieveUpdateDestroyAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class PetsListAPIView(APIView):
+class PetsListCreateAPIView(APIView):
     """
-    View to list all pets in the system.
+    View to list all pets in the system and create a pet.
     """
 
     serializer_class = PetsListSerializer
@@ -82,3 +85,12 @@ class PetsListAPIView(APIView):
         serializer = self.serializer_class(pets_queryset, many=True)
 
         return Response(data=serializer.data)
+
+    def post(self, request):
+
+        serializer = PetSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        created_instance = serializer.save()
+        serialized_instance = PetSerializer(created_instance)
+
+        return Response(serialized_instance.data, status=status.HTTP_201_CREATED)

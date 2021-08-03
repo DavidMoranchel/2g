@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PetOwner
+from .models import PetOwner, Pet
 
 
 class PetOwnersListSerializer(serializers.Serializer):
@@ -39,3 +39,13 @@ class PetsListSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField(max_length=255)
     type = serializers.CharField(max_length=50)
+
+
+class PetSerializer(serializers.Serializer):
+    id = serializers.ReadOnlyField()
+    name = serializers.CharField(max_length=255)
+    type = serializers.ChoiceField(choices=Pet.PET_TYPES)
+    owner_id = serializers.IntegerField()
+
+    def create(self, validated_data):
+        return Pet.objects.create(**validated_data)

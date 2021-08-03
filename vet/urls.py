@@ -6,7 +6,7 @@ from .views import (
     PetOwnersListCreateAPIView,
     PetOwnerRetrieveUpdateDestroyAPIView,
     # Pets
-    PetsListAPIView,
+    PetsListCreateAPIView,
 )
 
 urlpatterns = [
@@ -18,5 +18,5 @@ urlpatterns = [
         name="owners_retrieve-update-destroy",
     ),
     # Pets
-    path("pets/", PetsListAPIView.as_view(), name="pets_list"),
+    path("pets/", PetsListCreateAPIView.as_view(), name="pets_list"),
 ]
