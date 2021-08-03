@@ -1,11 +1,18 @@
+from django.db import models
 from rest_framework import serializers
 from .models import PetOwner, Pet
 
 
-class PetOwnersListSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
+# class PetOwnersListSerializer(serializers.Serializer):
+#     id = serializers.IntegerField()
+#     first_name = serializers.CharField(max_length=255)
+#     last_name = serializers.CharField(max_length=255)
+
+
+class PetOwnersListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetOwner
+        fields = ["id", "first_name", "last_name"]
 
 
 class PetOwnerSerializer(serializers.Serializer):
