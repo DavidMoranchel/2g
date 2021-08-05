@@ -1,4 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 # Serializers
 from .serializers import (
@@ -23,15 +25,9 @@ class PetOwnersListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = PetOwner.objects.all()
     serializer_class = PetOwnersListModelSerializer
-
-    def get_queryset(self):
-
-        first_name_filter = self.request.GET.get("first_name")
-        filters = {}
-        if first_name_filter:
-            filters["first_name__icontains"] = first_name_filter
-
-        return self.queryset.filter(**filters)
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["first_name", "=last_name"]
+    # filterset_fields = ["first_name", "last_name"]
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -65,6 +61,8 @@ class PetListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Pet.objects.all()
     serializer_class = PetListModelSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["name", "owner__first_name"]
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -114,10 +112,4 @@ class PetDateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
 
 # ENDPOINTS
-# 1. Create date -- DONE
-# 2. List all dates -- DONE
-# 3. Partial Update date (datetime, type) -- DONE
-# 4. Remove date -- DONE
-# 5. Retrieve with Pet Information -- DONE
-# 6. List dates by pet
-# 7. List dates by owner
+# 1. Retrieve all dates given the owner name

@@ -19,6 +19,7 @@ class PetListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pet
         fields = ["id", "name", "owner"]
+        depth = 1
 
 
 class PetModelSerializer(serializers.ModelSerializer):
