@@ -25,8 +25,9 @@ class PetOwnersListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = PetOwner.objects.all()
     serializer_class = PetOwnersListModelSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name", "=last_name"]
+    ordering_fields = ["email"]
     # filterset_fields = ["first_name", "last_name"]
 
     def get_serializer_class(self):
@@ -76,18 +77,20 @@ class PetDateListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = PetDate.objects.all()
     serializer_class = PetDateListModelSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["pet__owner__first_name", "pet__name"]
 
-    def get_queryset(self):
-        pet_id = self.request.GET.get("pet")
-        owner_id = self.request.GET.get("owner")
-        filters = {}
-        if pet_id:
-            filters["pet_id"] = pet_id
+    # def get_queryset(self):
+    #     pet_id = self.request.GET.get("pet")
+    #     owner_id = self.request.GET.get("owner")
+    #     filters = {}
+    #     if pet_id:
+    #         filters["pet_id"] = pet_id
 
-        if owner_id:
-            filters["pet__owner_id"] = owner_id
+    #     if owner_id:
+    #         filters["pet__owner_id"] = owner_id
 
-        return self.queryset.filter(**filters)
+    #     return self.queryset.filter(**filters)
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
@@ -112,4 +115,4 @@ class PetDateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
 
 
 # ENDPOINTS
-# 1. Retrieve all dates given the owner name
+# 1. Retrieve all dates given the owner first name
