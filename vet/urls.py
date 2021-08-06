@@ -1,6 +1,7 @@
 from django.urls import path
 
 # Views
+from rest_framework.authtoken import views as authtoken_views
 from .views import (
     # Pet owners
     PetOwnersListCreateAPIView,
@@ -14,6 +15,8 @@ from .views import (
 )
 
 urlpatterns = [
+    # Login
+    path("token-auth/", authtoken_views.obtain_auth_token, name="token_auth"),
     # Pet owners
     path("owners/", PetOwnersListCreateAPIView.as_view(), name="owners_list-create"),
     path(

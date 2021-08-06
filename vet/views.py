@@ -1,6 +1,7 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, BasePermission
+from rest_framework.authentication import TokenAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
-
 
 # Serializers
 from .serializers import (
@@ -17,6 +18,9 @@ from .serializers import (
     PetDatePartialUpdateModelSerializer,
 )
 
+# Custom permission
+from .permissions import OnlyAdminCanCreate
+
 # Models
 from .models import PetOwner, Pet, PetDate
 
@@ -28,6 +32,7 @@ class PetOwnersListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name", "=last_name"]
     ordering_fields = ["email"]
+    permission_classes = [IsAuthenticated, OnlyAdminCanCreate]
     # filterset_fields = ["first_name", "last_name"]
 
     def get_serializer_class(self):
