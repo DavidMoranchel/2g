@@ -32,7 +32,7 @@ class PetOwnersListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name", "=last_name"]
     ordering_fields = ["email"]
-    permission_classes = [IsAuthenticated, OnlyAdminCanCreate]
+    permission_classes = []
     # filterset_fields = ["first_name", "last_name"]
 
     def get_serializer_class(self):
