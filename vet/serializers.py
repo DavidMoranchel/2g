@@ -9,12 +9,6 @@ class PetOwnersListModelSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name", "email"]
 
 
-class PetOwnerModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PetOwner
-        fields = ["id", "first_name", "last_name", "address", "phone", "email"]
-
-
 class PetListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pet
@@ -53,3 +47,34 @@ class PetDatePartialUpdateModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetDate
         fields = ["datetime", "type"]
+
+
+class PetOwnerModelSerializer(serializers.ModelSerializer):
+
+    pets = PetModelSerializer(many=True)
+
+    class Meta:
+        model = PetOwner
+        fields = ["id", "first_name", "last_name", "address", "phone", "email", "pets"]
+
+
+from django.contrib.auth.models import User
+
+
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+        ]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def create(self, validate_data):
+        # validate_data["is_staff"] = True
+        user = User.objects.create_user(**validate_data)
+
+        return user

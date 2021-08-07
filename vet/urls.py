@@ -12,9 +12,13 @@ from .views import (
     # Pet dates
     PetDateListCreateAPIView,
     PetDateRetrieveUpdateDestroyAPIView,
+    # User
+    UserCreateAPIView,
 )
 
 urlpatterns = [
+    # SignUp
+    path("users/", UserCreateAPIView.as_view(), name="sign_up"),
     # Login
     path("token-auth/", authtoken_views.obtain_auth_token, name="token_auth"),
     # Pet owners

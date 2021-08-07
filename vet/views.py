@@ -16,6 +16,7 @@ from .serializers import (
     PetDateListModelSerializer,
     PetDatePetRetrieveModelSerializer,
     PetDatePartialUpdateModelSerializer,
+    UsersSerializer,
 )
 
 # Custom permission
@@ -32,7 +33,7 @@ class PetOwnersListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name", "=last_name"]
     ordering_fields = ["email"]
-    permission_classes = []
+    permission_classes = [IsAuthenticated]
     # filterset_fields = ["first_name", "last_name"]
 
     def get_serializer_class(self):
@@ -61,6 +62,7 @@ class PetOwnersRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
 
     queryset = PetOwner.objects.all()
     serializer_class = PetOwnerModelSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class PetListCreateAPIView(generics.ListCreateAPIView):
@@ -119,5 +121,9 @@ class PetDateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         return serializer_class
 
 
-# ENDPOINTS
-# 1. Retrieve all dates given the owner first name
+from django.contrib.auth.models import User
+
+
+class UserCreateAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UsersSerializer
